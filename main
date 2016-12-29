@@ -1,0 +1,23 @@
+Triangle triangle1;
+Triangle triangle2;
+
+void settings(){
+ size(1000, 500);
+}
+
+void setup(){
+triangle1 = new Triangle();
+triangle2 = new Triangle(color(255, 100, 100), 5);
+}
+
+
+void draw(){
+background(255);
+triangle1.display();
+triangle1.drive();
+
+triangle2.display2();
+triangle2.drive2();
+
+
+}
