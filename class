@@ -1,0 +1,163 @@
+class Triangle {
+  float triWidth = 50;   
+  float triHeight= 50;
+  
+  float x = triWidth/2;
+  float y = triHeight/2;    // Starting position of shape    
+  
+  color c;
+  float speed;
+  float xspeed;  // Speed of the shape
+  float yspeed;  // Speed of the shape
+
+  int xdirection = 1;  // Left or Right
+  int ydirection = 1;  // Top to Bottom
+
+  String diag = "45degrees";
+  String direction = "RIGHT"; 
+  
+  float X1 = 0;
+  float Y1 = 0;
+  float X2 = 50;
+  float Y2 = 25;
+  float X3 = 0;
+  float Y3 = 50;
+ 
+  Triangle() {
+    c = color(59, 156, 99); 
+    yspeed = 3;
+    xspeed = 3;
+  }
+  
+  Triangle(color c, float speed) {
+    this.c = c;
+    this.speed = speed;
+
+  }
+
+  void display2() {
+    pushMatrix();
+    translate(x, y);                //move X 27.5 right, move Y 25 down
+    if (direction == "RIGHT") {
+      rotate(0);        //0 dregrees
+    } else if (direction == "DOWN") {
+      rotate(PI/2);    //90degrees
+    } else if (direction == "LEFT") {
+      rotate(PI);      //180degrees
+    } else if (direction == "UP") {
+      rotate(-PI/2);  //-90 degrees
+    } 
+
+    translate(-triWidth/2, -triHeight/2);  //move half car left , move half car up
+
+
+    fill(c);
+    triangle(X1, Y1, X2, Y2, X3, Y3);
+    ellipseMode(RADIUS);  
+    fill(0);  
+    ellipse(50, 25, 5, 5);
+    popMatrix();
+  }
+
+void drive2() {
+
+    switch (direction) {
+    case "RIGHT":
+      x = x + speed;
+      if (x >= (width - 25)) {  //If X greater than screen minus half car
+        direction = "DOWN";
+      }
+      break;
+    case "DOWN":
+      y = y + speed;
+      if (y >= (height - 25)) {
+        direction = "LEFT";
+      }
+      break;
+    case "LEFT":
+      x = x - speed;
+      if (x <= 25) {
+        direction = "UP";
+      }
+      break;
+    case "UP":
+      y = y - speed;
+      if (y <= 25) {
+        direction = "RIGHT";
+      }
+      break;
+    }
+  }
+  void display() {
+    pushMatrix();
+    translate(x, y);
+    switch (diag) { 
+      
+    case "45degrees":                  
+      rotate(PI/4);                   // vira 45 
+      
+      if (y>(height - triHeight/2)){   //bate na base, vai para girar
+        diag = "315degrees";
+      }
+      if (x>(width-triWidth/2)){
+        diag = "135degrees";
+     }
+      break;
+      
+      
+    case "315degrees":
+      rotate(7*PI/4);                         //vira 315 
+      if (y<(triHeight/2)) {              //bate no topo, vai para girar
+        diag = "45degrees";
+      }
+      if (x>(width-triWidth/2)){
+        diag = "225degrees";
+      }
+      break;
+      
+    case "135degrees":
+      rotate(3*PI/4);                    //vira 135 
+      if (y >(height - triHeight/2)) {    //bate na base, vai girar
+        diag = "225degrees";
+      } 
+      if (x < triWidth/2){
+        diag = "45degrees";
+      }
+      break;  
+      
+    case "225degrees":
+      rotate(5*PI/4);                   //vira 225 
+      if ( y < triHeight/2) {
+        diag = "135degrees";
+      }
+      if (x < triWidth/2){
+        diag = "315degrees";
+      }
+      break;
+
+    }
+    
+      translate(-triWidth/2, -triHeight/2);
+
+
+      fill(c);
+      triangle(X1, Y1, X2, Y2, X3, Y3);
+      ellipseMode(RADIUS);  
+      fill(0);  
+      ellipse(50, 25, 5, 5);
+    popMatrix();
+    
+  }
+    void drive() {
+      x = x + ( xspeed * xdirection );
+      y = y + ( yspeed * ydirection );
+
+
+      if (x > (width - triWidth/2) || x < triWidth/2) {
+        xdirection *= -1;
+      }
+      if (y > (height - triHeight/2)|| y < triHeight/2) {
+        ydirection *= -1;
+      }
+    }
+}
