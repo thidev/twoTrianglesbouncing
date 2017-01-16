@@ -1,10 +1,10 @@
 class Triangle {
   float triWidth = 50;   
   float triHeight= 50;
-  
+
   float x = triWidth/2;
   float y = triHeight/2;    // Starting position of shape    
-  
+
   color c;
   float speed;
   float xspeed;  // Speed of the shape
@@ -15,27 +15,32 @@ class Triangle {
 
   String diag = "45degrees";
   String direction = "RIGHT"; 
-  
+
+
   float X1 = 0;
   float Y1 = 0;
   float X2 = 50;
   float Y2 = 25;
   float X3 = 0;
   float Y3 = 50;
- 
+
+  // Contructors//
   Triangle() {
     c = color(59, 156, 99); 
     yspeed = 3;
     xspeed = 3;
   }
-  
+
   Triangle(color c, float speed) {
     this.c = c;
     this.speed = speed;
-
   }
 
-  void display2() {
+
+
+  // ************* - Alice - ************* //
+  void display() {  
+
     pushMatrix();
     translate(x, y);                //move X 27.5 right, move Y 25 down
     if (direction == "RIGHT") {
@@ -59,7 +64,7 @@ class Triangle {
     popMatrix();
   }
 
-void drive2() {
+  void drive() {
 
     switch (direction) {
     case "RIGHT":
@@ -88,76 +93,79 @@ void drive2() {
       break;
     }
   }
-  void display() {
+  
+  
+  
+  // ************* - Bob - ************* //
+  void drive2() {
+    x = x + ( xspeed * xdirection );
+    y = y + ( yspeed * ydirection );
+
+
+    if (x > (width - triWidth/2) || x < triWidth/2) {
+      xdirection *= -1;
+    }
+    if (y > (height - triHeight/2)|| y < triHeight/2) {
+      ydirection *= -1;
+    }
+  }
+
+  void display2() {
     pushMatrix();
     translate(x, y);
     switch (diag) { 
-      
+
     case "45degrees":                  
       rotate(PI/4);                   // vira 45 
-      
-      if (y>(height - triHeight/2)){   //bate na base, vai para girar
+
+      if (y>(height - triHeight/2)) {   //bate na base, vai para girar
         diag = "315degrees";
       }
-      if (x>(width-triWidth/2)){
+      if (x>(width-triWidth/2)) {
         diag = "135degrees";
-     }
+      }
       break;
-      
-      
+
+
     case "315degrees":
       rotate(7*PI/4);                         //vira 315 
       if (y<(triHeight/2)) {              //bate no topo, vai para girar
         diag = "45degrees";
       }
-      if (x>(width-triWidth/2)){
+      if (x>(width-triWidth/2)) {
         diag = "225degrees";
       }
       break;
-      
+
     case "135degrees":
       rotate(3*PI/4);                    //vira 135 
       if (y >(height - triHeight/2)) {    //bate na base, vai girar
         diag = "225degrees";
       } 
-      if (x < triWidth/2){
+      if (x < triWidth/2) {
         diag = "45degrees";
       }
       break;  
-      
+
     case "225degrees":
       rotate(5*PI/4);                   //vira 225 
       if ( y < triHeight/2) {
         diag = "135degrees";
       }
-      if (x < triWidth/2){
+      if (x < triWidth/2) {
         diag = "315degrees";
       }
       break;
-
     }
-    
-      translate(-triWidth/2, -triHeight/2);
+
+    translate(-triWidth/2, -triHeight/2);
 
 
-      fill(c);
-      triangle(X1, Y1, X2, Y2, X3, Y3);
-      ellipseMode(RADIUS);  
-      fill(0);  
-      ellipse(50, 25, 5, 5);
+    fill(c);
+    triangle(X1, Y1, X2, Y2, X3, Y3);
+    ellipseMode(RADIUS);  
+    fill(0);  
+    ellipse(50, 25, 5, 5);
     popMatrix();
-    
   }
-    void drive() {
-      x = x + ( xspeed * xdirection );
-      y = y + ( yspeed * ydirection );
-
-
-      if (x > (width - triWidth/2) || x < triWidth/2) {
-        xdirection *= -1;
-      }
-      if (y > (height - triHeight/2)|| y < triHeight/2) {
-        ydirection *= -1;
-      }
-    }
 }
