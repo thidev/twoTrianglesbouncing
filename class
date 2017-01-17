@@ -1,34 +1,47 @@
 class Triangle {
   float triWidth = 50;   
   float triHeight= 50;
+  
+  float triWidthBob = 100;   
+  float triHeightBob = 100;
 
   float x = triWidth/2;
-  float y = triHeight/2;    // Starting position of shape    
-
+  float y = triHeight/2; // Starting position of shape    
+   
+  float xBob = width/2;
+  float yBob = height/2;
+  
   color c;
   float speed;
   float xspeed;  // Speed of the shape
   float yspeed;  // Speed of the shape
 
-  int xdirection = 1;  // Left or Right
-  int ydirection = 1;  // Top to Bottom
+  int xdirection = 5;  // Left to Right
+  int ydirection = 5;  // Top to Bottom
 
-  String diag = "45degrees";
-  String direction = "RIGHT"; 
+  String diag = "45degrees";    //Bob's start direction on the screen
+  String direction = "RIGHT";  //Alice's start direction on the screen
 
-
+// Alice size//
   float X1 = 0;
   float Y1 = 0;
   float X2 = 50;
   float Y2 = 25;
   float X3 = 0;
   float Y3 = 50;
+//Bob size//  
+  float X11 = 0;
+  float Y11 = 0;
+  float X21 = 100;
+  float Y21 = 50;
+  float X31 = 0;
+  float Y31 = 100;
 
   // Contructors//
   Triangle() {
     c = color(59, 156, 99); 
-    yspeed = 3;
-    xspeed = 3;
+    yspeed = 1;
+    xspeed = 1;
   }
 
   Triangle(color c, float speed) {
@@ -42,18 +55,18 @@ class Triangle {
   void display() {  
 
     pushMatrix();
-    translate(x, y);                //move X 27.5 right, move Y 25 down
+    translate(x, y);                //move half Alice size right, down for starting
     if (direction == "RIGHT") {
-      rotate(0);        //0 dregrees
+      rotate(radians(0));        //0 dregrees
     } else if (direction == "DOWN") {
-      rotate(PI/2);    //90degrees
+      rotate(radians(90));    //90degrees
     } else if (direction == "LEFT") {
-      rotate(PI);      //180degrees
+      rotate(radians(180));     //180degrees
     } else if (direction == "UP") {
-      rotate(-PI/2);  //-90 degrees
+      rotate(radians(-90));  //-90 degrees
     } 
 
-    translate(-triWidth/2, -triHeight/2);  //move half car left , move half car up
+    translate(-triWidth/2, -triHeight/2);  //move half Alice size left, up for ending
 
 
     fill(c);
@@ -98,74 +111,74 @@ class Triangle {
   
   // ************* - Bob - ************* //
   void drive2() {
-    x = x + ( xspeed * xdirection );
-    y = y + ( yspeed * ydirection );
+    xBob = xBob + ( xspeed * xdirection );
+    yBob = yBob + ( yspeed * ydirection );
 
 
-    if (x > (width - triWidth/2) || x < triWidth/2) {
+    if (xBob > (width - triWidthBob/2) || xBob < (triWidthBob/2)) {
       xdirection *= -1;
     }
-    if (y > (height - triHeight/2)|| y < triHeight/2) {
+    if (yBob > (height - triHeightBob/2)|| yBob < (triHeightBob/2)) {
       ydirection *= -1;
     }
   }
 
   void display2() {
     pushMatrix();
-    translate(x, y);
+    translate(xBob, yBob);
     switch (diag) { 
 
     case "45degrees":                  
-      rotate(PI/4);                   // vira 45 
+      rotate(radians(45));                   // Starts 45 degree 
 
-      if (y>(height - triHeight/2)) {   //bate na base, vai para girar
+      if (yBob>(height - triHeightBob/2)) {       //if reach down rotate 315
         diag = "315degrees";
       }
-      if (x>(width-triWidth/2)) {
+      if (xBob>(width-triWidthBob/2)) {
         diag = "135degrees";
       }
       break;
 
 
     case "315degrees":
-      rotate(7*PI/4);                         //vira 315 
-      if (y<(triHeight/2)) {              //bate no topo, vai para girar
+    rotate(radians(315));                         //turn 315                       
+      if (yBob<(triHeightBob/2)) {              //
         diag = "45degrees";
       }
-      if (x>(width-triWidth/2)) {
+      if (xBob>(width-triWidthBob/2)) {
         diag = "225degrees";
       }
       break;
 
     case "135degrees":
-      rotate(3*PI/4);                    //vira 135 
-      if (y >(height - triHeight/2)) {    //bate na base, vai girar
+      rotate(radians(135));                   //turn 135 
+      if (yBob >(height - triHeightBob/2)) {    //
         diag = "225degrees";
       } 
-      if (x < triWidth/2) {
+      if (xBob < triWidthBob/2) {
         diag = "45degrees";
       }
       break;  
 
     case "225degrees":
-      rotate(5*PI/4);                   //vira 225 
-      if ( y < triHeight/2) {
+      rotate(radians(225));                  //turn 225 
+      if ( yBob < triHeightBob/2) {
         diag = "135degrees";
       }
-      if (x < triWidth/2) {
+      if (xBob < triWidthBob/2) {
         diag = "315degrees";
       }
       break;
     }
 
-    translate(-triWidth/2, -triHeight/2);
+    translate(-triWidthBob/2, -triHeightBob/2);
 
 
     fill(c);
-    triangle(X1, Y1, X2, Y2, X3, Y3);
+    triangle(X11, Y11, X21, Y21, X31, Y31);
     ellipseMode(RADIUS);  
     fill(0);  
-    ellipse(50, 25, 5, 5);
+    ellipse(100, 50, 5, 5);
     popMatrix();
   }
 }
