@@ -1,15 +1,25 @@
 class Triangle {
+
+  int right = 0;
+  int left = 0;
+  int down = 0;
+  int up =0;
+  
   float triWidth = 50;   
   float triHeight= 50;
-  
+
   float triWidthBob = 100;   
   float triHeightBob = 100;
 
   float x = triWidth/2;
-  float y = triHeight/2; // Starting position of shape    
-   
-  float xBob = width/2;
-  float yBob = height/2;
+  float y = triHeight/2; // Alice coordinate
+  
+  float xBob;
+  float yBob;// Bob coordinates
+
+  float aSize;  // size
+  float bSize;
+  float cSize;
   
   color c;
   float speed;
@@ -22,31 +32,24 @@ class Triangle {
   String diag = "45degrees";    //Bob's start direction on the screen
   String direction = "RIGHT";  //Alice's start direction on the screen
 
-// Alice size//
-  float X1 = 0;
-  float Y1 = 0;
-  float X2 = 50;
-  float Y2 = 25;
-  float X3 = 0;
-  float Y3 = 50;
-//Bob size//  
-  float X11 = 0;
-  float Y11 = 0;
-  float X21 = 100;
-  float Y21 = 50;
-  float X31 = 0;
-  float Y31 = 100;
 
   // Contructors//
   Triangle() {
-    c = color(59, 156, 99); 
+    c = color(59, 156, 99);  // bob
     yspeed = 1;
     xspeed = 1;
+    xBob = random (50, 950);
+    yBob = random (50, 450);  
+    bSize = 1;
   }
 
-  Triangle(color c, float speed) {
+  Triangle(color c, float speed, float size) {  // alice and charlie
     this.c = c;
     this.speed = speed;
+    this.aSize = size;
+    this.cSize = size;
+    x = random (50,950); 
+    y = random (50,450);  
   }
 
 
@@ -70,10 +73,16 @@ class Triangle {
 
 
     fill(c);
-    triangle(X1, Y1, X2, Y2, X3, Y3);
+    scale(aSize);
+    beginShape();
+    vertex(0, 0);
+    vertex(50, 25);
+    vertex(0, 50);
+
+    endShape(CLOSE);
     ellipseMode(RADIUS);  
     fill(0);  
-    ellipse(50, 25, 5, 5);
+    ellipse(50, 25, 5, 5);   
     popMatrix();
   }
 
@@ -106,9 +115,9 @@ class Triangle {
       break;
     }
   }
-  
-  
-  
+
+
+
   // ************* - Bob - ************* //
   void drive2() {
     xBob = xBob + ( xspeed * xdirection );
@@ -124,6 +133,7 @@ class Triangle {
   }
 
   void display2() {
+
     pushMatrix();
     translate(xBob, yBob);
     switch (diag) { 
@@ -131,7 +141,7 @@ class Triangle {
     case "45degrees":                  
       rotate(radians(45));                   // Starts 45 degree 
 
-      if (yBob>(height - triHeightBob/2)) {       //if reach down rotate 315
+      if (yBob>(height - triHeightBob/2)) {       //if reach bottom rotate 315
         diag = "315degrees";
       }
       if (xBob>(width-triWidthBob/2)) {
@@ -141,7 +151,7 @@ class Triangle {
 
 
     case "315degrees":
-    rotate(radians(315));                         //turn 315                       
+      rotate(radians(315));                         //turn 315                       
       if (yBob<(triHeightBob/2)) {              //
         diag = "45degrees";
       }
@@ -175,10 +185,104 @@ class Triangle {
 
 
     fill(c);
-    triangle(X11, Y11, X21, Y21, X31, Y31);
+    scale(bSize);
+    beginShape();
+    vertex(0, 0);
+    vertex(100, 50);
+    vertex(0, 100);
+    endShape(CLOSE);
     ellipseMode(RADIUS);  
     fill(0);  
-    ellipse(100, 50, 5, 5);
+    ellipse(100, 50, 5, 5);  
     popMatrix();
+  }
+  
+  // charlie// *************************************
+  void drive3(){
+        if (keys['q']) {  // left
+      x-=speed;
+      up = 0;
+      down = 0;
+      right=0; 
+      left=1;
+    }   
+
+
+    else if (keys['d']) { // right
+      x+=speed;   
+      up = 0;
+      down = 0;
+      left=0; 
+      right=1;
+    } 
+
+    if (keys['z']) {  // up
+      y-=speed; 
+      down = 0;
+      left=0; 
+      right=0;
+      up = 1;
+    }
+    else if (keys['s']) {  // down
+      y+=speed; 
+      left=0; 
+      right=0;
+      up = 0;
+      down = 1;
+    }
+  }
+   
+   void display3() {
+    pushMatrix();   
+    translate(x, y);
+
+
+    if (left==1) {
+      rotate(PI);
+    }
+    if (right==1) {
+      rotate(0);
+    }
+    if (down==1) {
+      rotate(PI/2);
+    }
+    if (up==1) {
+      rotate(3*PI/2);
+    }
+
+
+
+    fill(c);
+    scale(cSize);
+    beginShape();
+    vertex(0, 0);
+    vertex(100, 50);
+    vertex(0, 100);
+    endShape(CLOSE);
+    ellipseMode(RADIUS);  
+    fill(0);  
+    ellipse(100, 50, 5, 5);  
+    popMatrix();
+  }
+  //**************************************************
+
+  void size() {
+
+    if (keys['p']) {
+      aSize += 0.1;
+    } else if (keys['o']) {
+      aSize -= 0.1;
+    }
+    if (keys['u']) {
+      bSize += 0.1;
+    } else if (keys['i']) {
+      bSize -= 0.1;
+    }
+    if (keys['m']) {
+      cSize += 0.1;
+    } else if (keys['l']) {
+      cSize -= 0.1;
+    }
+    
   }
 }
