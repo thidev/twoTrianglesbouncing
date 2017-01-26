@@ -1,27 +1,44 @@
 Triangle Bob;
 Triangle Alice;
+Triangle Charlie; 
 
-void settings(){
- size(1000, 500);
+boolean [] keys = new boolean [128];
+
+
+void settings() {
+  size(1000, 500);
 }
 
-void setup(){
-Bob = new Triangle();
-Alice = new Triangle(color(255, 100, 100), 5);
+void setup() {
+  Bob = new Triangle();
+  Alice = new Triangle(color(255, 100, 100), 5, 1);
+  Charlie = new Triangle(color(0,0,225), 4, 1);
 }
 
 
-void draw(){
-background(255);
+void draw() {
+  background(255);
 
-Alice.display();
-Alice.drive();
+  Alice.display();
+  Alice.drive();
+  Alice.size();
 
-Bob.display2();
-Bob.drive2();
+  Bob.display2();
+  Bob.drive2();
+  Bob.size();
+  
+  Charlie.display3();
+  Charlie.drive3();
+  Charlie.size();
+}
 
 
 
+void keyPressed() { 
+  keys[key] = true;
+} 
 
 
+void keyReleased() { 
+  keys [key] = false;
 }
